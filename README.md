@@ -1,6 +1,7 @@
 Plik Ansible Role
 =================
-[![CI](https://github.com/abarrak/gatus-ansible/actions/workflows/test.yml/badge.svg)](https://github.com/abarrak/gatus-ansible/actions/workflows/test.yml)
+[![CI: Lint](https://github.com/abarrak/gatus-ansible/actions/workflows/lint.yml/badge.svg)](https://github.com/abarrak/gatus-ansible/actions/workflows/lint.yml)
+[![CI: Tests](https://github.com/abarrak/gatus-ansible/actions/workflows/test.yml/badge.svg)](https://github.com/abarrak/gatus-ansible/actions/workflows/test.yml)
 [![Release](https://github.com/abarrak/gatus-ansible/actions/workflows/release.yml/badge.svg)](https://github.com/abarrak/gatus-ansible/actions/workflows/release.yml)
 
 This is an ansible role to install and configure gatus.
