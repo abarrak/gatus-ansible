@@ -28,9 +28,8 @@ provisioner:
       interpreter_python: auto_silent
       callbacks_enabled: profile_tasks, timer, yaml
 
-##
-## minimal molecule
-## ================
+###
+## minimal:
 ##
 # dependency:
 #   name: galaxy
