@@ -1,7 +1,14 @@
 ---
 - name: Converge
   hosts: all
+  become: true
   tasks:
     - name: Run gatus tasks in the test VM (docker-image)
       include_role:
         name: gatus
+  post_tasks:
+    - name: Verify gatus application is running.
+      command: "systemctl is-active gatus.service"
+      changed_when: false
+      failed_when: false
+      become: true

@@ -1,4 +1,4 @@
-Plik Ansible Role
+Gatus Ansible Role
 =================
 [![CI: Lint](https://github.com/abarrak/gatus-ansible/actions/workflows/lint.yml/badge.svg)](https://github.com/abarrak/gatus-ansible/actions/workflows/lint.yml)
 [![CI: Tests](https://github.com/abarrak/gatus-ansible/actions/workflows/test.yml/badge.svg)](https://github.com/abarrak/gatus-ansible/actions/workflows/test.yml)
