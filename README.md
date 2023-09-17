@@ -1,11 +1,11 @@
 Plik Ansible Role
 =================
-[![CI](https://github.com/abarrak/gatus-ansible-role/actions/workflows/test.yml/badge.svg)](https://github.com/abarrak/gatus-ansible-role/actions/workflows/test.yml)
-[![Release](https://github.com/abarrak/gatus-ansible-role/actions/workflows/release.yml/badge.svg)](https://github.com/abarrak/gatus-ansible-role/actions/workflows/release.yml)
+[![CI](https://github.com/abarrak/gatus-ansible/actions/workflows/test.yml/badge.svg)](https://github.com/abarrak/gatus-ansible/actions/workflows/test.yml)
+[![Release](https://github.com/abarrak/gatus-ansible/actions/workflows/release.yml/badge.svg)](https://github.com/abarrak/gatus-ansible/actions/workflows/release.yml)
 
 This is an ansible role to install and configure gatus.
 
-[Gatus]() is a ...
+[Gatus](https://github.com/TwiN/gatus) is an utomated developer-oriented status page.
 
 Requirements
 ------------
@@ -32,11 +32,11 @@ Install the role:
 
 Include it to run the setup tasks:
 
-    - hosts: gatus-server
+    - hosts: gatus
       import_role:
         name: abarrak.gatus
 
-For plik configuration, override the [config template](https://github.com/abarrak/gatus-ansible-role/blob/main/templates/config.yml.j2) for gatus.
+A sample configuration [(config template)](https://github.com/abarrak/gatus-ansible/blob/main/templates/config.yml.j2) for gatus is available here and used. Override for your setup or use [the CI/CD offering in this repo.](https://github.com/abarrak/gatus-pipelines)
 
 License
 -------
