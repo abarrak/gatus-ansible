@@ -7,7 +7,7 @@
       include_role:
         name: gatus
   post_tasks:
-    - name: Verify gatus application is running.
+    - name: Verify gatus application is running
       command: "systemctl is-active gatus.service"
       changed_when: false
       failed_when: false
