@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: gatus
   author: Abdullah Barrak
   description: An installation and systemd deployment for gatus.
   company: abarrak

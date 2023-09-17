@@ -36,7 +36,7 @@ Include it to run the setup tasks:
       import_role:
         name: abarrak.gatus
 
-A sample configuration [(config template)](https://github.com/abarrak/gatus-ansible/blob/main/templates/config.yml.j2) for gatus is available here and used. Override for your setup or use [the CI/CD offering in this repo.](https://github.com/abarrak/gatus-pipelines)
+A sample configuration [(config template)](https://github.com/abarrak/gatus-ansible/blob/main/templates/config.yml.j2) for gatus is used. You can override for your setup or use [CI/CD offering in this repo.](https://github.com/abarrak/gatus-pipelines)
 
 License
 -------
