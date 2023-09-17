@@ -1,0 +1,5 @@
+---
+# defaults file for abarrak.gatus
+main_directory: /home/gatus
+user_name: gatus
+web_port: 443

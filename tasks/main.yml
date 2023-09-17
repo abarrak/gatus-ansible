@@ -1,0 +1,138 @@
+---
+# tasks file for abarrak.gatus
+- name: Add gatus user
+  ansible.builtin.user:
+    name: gatus
+    password: "!"
+    groups: wheel
+    append: true
+    shell: /sbin/nologin
+    home: /home/{{ user_name }}
+
+- name: Permit Firewall rules for gatus
+  ansible.posix.firewalld:
+    permanent: true
+    state: enabled
+    port: "{{ item }}"
+    immediate: true
+  with_items:
+    - "443/tcp"
+
+- name: Ensure required folders are created
+  ansible.builtin.file:
+    path: "{{ main_directory }}/{{ item }}"
+    state: directory
+    owner: gatus
+    group: gatus
+    mode: '0755'
+  loop:
+    - data
+    - config
+
+- name: Install software dependencies
+  ansible.builtin.package:
+    name:
+      - golang
+      - git
+      - sqlite-devel
+      - ca-certificates
+    state: present
+
+- name: Install local CA certs - directory
+  file:
+    path: /etc/pki/ca-trust/source/anchors
+    state: directory
+
+- name: Install local CA certs - copy
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /etc/pki/ca-trust/source/anchors/
+  with_fileglob: "../files/*_ca.crt"
+
+- name: Update trusted CAs
+  ansible.builtin.shell: |
+    /bin/update-ca-trust
+  changed_when: true
+
+- name: Copy config file
+  ansible.builtin.template:
+    src: ../templates/config.yml.j2
+    dest: "{{ main_directory }}/config/config.yaml"
+    owner: gatus
+    group: gatus
+    mode: '0664'
+
+- name: Install web server certs
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ main_directory }}/config/."
+    owner: gatus
+    group: gatus
+    mode: "600"
+  loop:
+    - ../files/server.crt
+    - ../files/server.key
+
+- name: Check if source already available
+  ansible.builtin.stat:
+    path: "{{ main_directory }}/src"
+  register: source_dir
+
+- name: Clone source code
+  ansible.builtin.git:
+    repo: https://github.com/TwiN/gatus.git
+    dest: "{{ main_directory }}/src"
+    version: master
+    single_branch: true
+  when: not source_dir.stat.exists
+
+- name: Check if binary already built
+  ansible.builtin.stat:
+    path: "{{ main_directory }}/gatus"
+  register: binary_file
+
+- name: Build source
+  ansible.builtin.shell:
+    cmd: CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o gatus .
+    chdir: "{{ main_directory }}/src"
+  when: not binary_file.stat.exists
+  changed_when: true
+
+- name: copy binary output
+  ansible.builtin.copy:
+    src: "{{ main_directory }}/src/gatus"
+    dest: "{{ main_directory }}"
+    mode: 0755
+    owner: gatus
+    group: gatus
+    remote_src: yes
+  when: not binary_file.stat.exists
+
+- name: Allow selinux permission for gatus binary
+  sefcontext:
+    target: "{{ main_directory }}/gatus"
+    setype: bin_t
+    state: present
+
+- name: restore selinux context
+  command: restorecon -irv "{{ main_directory }}/gatus"
+  changed_when: true
+
+- name: Permit cap_net_bind_service for https port
+  community.general.capabilities:
+    path: "{{ main_directory }}/gatus"
+    capability: cap_net_bind_service+ep
+    state: present
+
+- name: Copy systemd unit file
+  ansible.builtin.template:
+    src: ../templates/gatus.service.j2
+    dest: /lib/systemd/system/gatus.service
+    mode: '0744'
+
+- name: Run service unit
+  ansible.builtin.systemd:
+    name: gatus.service
+    enabled: true
+    state: started
+    daemon_reload: true

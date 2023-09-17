@@ -1,0 +1,38 @@
+storage:
+  type: sqlite
+  path: {{ main_directory }}/data/data.db
+
+web:
+  port: 443
+  tls:
+    certificate-file: "{{ main_directory }}/config/server.crt"
+    private-key-file: "{{ main_directory }}/config/server.key"
+
+alerting:
+  slack:
+    webhook-url: "SLACK_WEBHOOK_PLACEHOLDER"
+
+endpoints:
+  - name: example endpoint
+    group: example
+    url: "https://example.com"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: slack
+        description: "healthcheck failed 3 times"
+        failure-threshold: 3
+        send-on-resolved: true
+
+  - name: main website - certificate
+    group: example
+    url: "https://example.com"
+    interval: 12h
+    conditions:
+      - "[CERTIFICATE_EXPIRATION] > 288h"
+    alerts:
+      - type: slack
+        description: "certificate will expire in 12 days"
+        failure-threshold: 1
+        send-on-resolved: true

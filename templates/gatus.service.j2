@@ -1,0 +1,18 @@
+[Unit]
+Description=systemd service unit file for gatus web app.
+
+[Service]
+Type=simple
+User={{ user_name }}
+Group={{ user_name }}
+LimitNOFILE=1024
+
+Restart=on-failure
+RestartSec=10
+
+WorkingDirectory=/home/gatus
+Environment="PORT={{ web_port }}"
+ExecStart=/home/gatus/gatus
+
+[Install]
+WantedBy=multi-user.target
