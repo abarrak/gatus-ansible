@@ -42,7 +42,9 @@ jobs:
         run: ansible-galaxy install -r requirements.yml
 
       - name: Run Molecule tests.
-        run: molecule test
+        run: |
+          sudo yum install python3-firewall
+          molecule test
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
