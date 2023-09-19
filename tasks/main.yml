@@ -120,10 +120,12 @@
     target: "{{ main_directory }}/gatus"
     setype: bin_t
     state: present
+  when: ansible_facts.selinux.status == 'enabled'
 
 - name: restore selinux context
   command: restorecon -irv "{{ main_directory }}/gatus"
   changed_when: true
+  when: ansible_facts.selinux.status == 'enabled'
 
 - name: Permit cap_net_bind_service for https port
   community.general.capabilities:
