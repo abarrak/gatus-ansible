@@ -32,9 +32,6 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install os dependencies.
-        run: sudo apt-get install python3-firewall
-
       - name: Install test dependencies.
         run: pip3 install ansible docker molecule-plugins[docker]
 
@@ -44,7 +41,6 @@ jobs:
       - name: Run Molecule tests.
         run: molecule test
         env:
-          ANSIBLE_PYTHON_INTERPRETER: '/opt/hostedtoolcache/Python/3.11.5/x64'
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DISTRO: ${{ matrix.distro }}
