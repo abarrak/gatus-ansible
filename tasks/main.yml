@@ -9,6 +9,12 @@
     shell: /sbin/nologin
     home: /home/{{ user_name }}
 
+- name: Install Firewalld requirement
+  ansible.builtin.package:
+    name: python3-firewall
+    state: installed  
+  when: ansible_facts.services['firewalld.service'] is defined  
+
 - name: Permit Firewall rules for gatus
   ansible.posix.firewalld:
     permanent: true
@@ -17,6 +23,7 @@
     immediate: true
   with_items:
     - "443/tcp"
+  when: ansible_facts.services['firewalld.service'] is defined  
 
 - name: Ensure required folders are created
   ansible.builtin.file:
