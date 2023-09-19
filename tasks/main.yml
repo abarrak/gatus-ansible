@@ -12,8 +12,8 @@
 - name: Install Firewalld requirement
   ansible.builtin.package:
     name: python3-firewall
-    state: installed  
-  when: ansible_facts.services['firewalld.service'] is defined  
+    state: installed
+  when: ansible_facts.services['firewalld.service'] is defined
 
 - name: Permit Firewall rules for gatus
   ansible.posix.firewalld:
@@ -23,7 +23,7 @@
     immediate: true
   with_items:
     - "443/tcp"
-  when: ansible_facts.services['firewalld.service'] is defined  
+  when: ansible_facts.services['firewalld.service'] is defined
 
 - name: Ensure required folders are created
   ansible.builtin.file:
@@ -31,7 +31,7 @@
     state: directory
     owner: gatus
     group: gatus
-    mode: '0755'
+    mode: "0755"
   loop:
     - data
     - config
@@ -67,7 +67,7 @@
     dest: "{{ main_directory }}/config/config.yaml"
     owner: gatus
     group: gatus
-    mode: '0664'
+    mode: "0664"
 
 - name: Install web server certs
   ansible.builtin.copy:
@@ -137,7 +137,7 @@
   ansible.builtin.template:
     src: ../templates/gatus.service.j2
     dest: /lib/systemd/system/gatus.service
-    mode: '0744'
+    mode: "0744"
 
 - name: Run service unit
   ansible.builtin.systemd:
