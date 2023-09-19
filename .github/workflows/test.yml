@@ -34,7 +34,7 @@ jobs:
 
       - name: Install os dependencies.
         run: sudo apt-get install python3-firewall
-        
+
       - name: Install test dependencies.
         run: pip3 install ansible docker molecule-plugins[docker]
 
